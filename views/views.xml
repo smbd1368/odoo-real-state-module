@@ -1,0 +1,207 @@
+<odoo>
+    <data>
+
+
+        <!--        Search view -->
+
+        <record id="view_real_estate_search" model="ir.ui.view">
+            <field name="name">estate.properties.search</field>
+            <field name="model">real_estate.estate_properties</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Name"/>
+                    <field name="selling_price" string="Selling Price"/>
+                    <field name="postcode"/>
+                    <field name="property_type_id"/>
+                    <field name="buyer" string="Buyer"/>
+                    <field name="seller" string="Salesman"/>
+
+                    <!--                    <separator/>-->
+                    <!--                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>-->
+                    <!--                    <group expand="1" string="Group By">-->
+                    <!--                        <filter string="Provider" name="provider"-->
+                    <!--                                context="{'group_by':'delivery_type', 'residual_visible':True}"/>-->
+                    <!--                    </group>-->
+                </search>
+            </field>
+        </record>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="real_estate.list">
+            <field name="name">estate properties list</field>
+            <field name="model">real_estate.estate_properties</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,sold,cancelled"/>
+
+                    <field name="postcode"/>
+                    <field name="living_area"/>
+
+                    <field name="total_area"/>
+                    <field name="description"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="selling_price"/>
+                    <field name="property_type_id"/>
+                    <field name="garden"/>
+                    <field name="garden_area"/>
+                    <field name="garden_orientation"/>
+                    <field name="tag_ids" string="Tag Ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_real_estate_tree" model="ir.ui.view">
+            <field name="name">estate_properties.tree</field>
+            <field name="model">real_estate.estate_properties</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,sold,cancelled"/>
+                    <field name="postcode"/>
+                    <field name="living_area"/>
+                    <field name="garden"/>
+                    <field name="garden_area"/>
+                    <field name="garden_orientation"/>
+                    <field name="total_area"/>
+                    <field name="description"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="selling_price" readonly="1"/>
+                    <field name="buyer" string=" Buyer"/>
+                    <field name="seller" string="Salesman"/>
+                    <field name="tag_ids" string="Tag Ids"/>
+                    <field name="best_price" readonly="1"/>
+
+
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="real_estate.form">
+            <field name="name">estate.properties.form</field>
+            <field name="model">real_estate.estate_properties</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_cancel" string="Cancel" confirm="Are You Sure you want to Cancel?"
+                                type="object" class="oe_highlight"/>
+                        <button name="action_sold" type="object" string="Sold"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="status" widget="statusbar" statusbar_visible="new,sold,cancelled"/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="postcode"/>
+                                    <field name="living_area"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="total_area"/>
+                                    <field name="best_price"/>
+
+                                </group>
+                                <group>
+                                    <field name="expected_price"/>
+                                    <field name="selling_price"/>
+                                    <field name="best_price" readonly="1"/>
+
+                                </group>
+                            </group>
+                            <notebook>
+                                <page string="Description">
+                                    <group>
+
+                                        <field name="description" string="Description"/>
+                                        <field name="name" string="Name"/>
+                                        <field name="postcode" string="Postcode"/>
+                                        <field name="living_area" string="Living Area"/>
+                                        <field name="expected_price" string="Expected Price"/>
+                                        <field name="bedrooms" string="Bedrooms"/>
+                                        <field name="selling_price" string="Selling Price" readonly="1"/>
+                                        <field name="property_type_id"/>
+                                    </group>
+                                </page>
+                                <page string="Other Info">
+                                    <group>
+                                        <field name="buyer" string=" Buyer"/>
+                                        <field name="seller" string="Salesman"/>
+                                        <field name="tag_ids" string="Tag Ids"/>
+
+                                    </group>
+
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="estate_properties_action_window">
+            <field name="name">Estate Properties</field>
+            <field name="res_model">real_estate.estate_properties</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_users_form_inherited" model="ir.ui.view">
+            <field name="name">res.users.form.inherited</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[@name='preferences']" position="inside">
+                    <group>
+                        <field name="property_ids"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- server action to the one above -->
+        <!--
+            <record model="ir.actions.server" id="real_estate.action_server">
+              <field name="name">real_estate server</field>
+              <field name="model_id" ref="model_real_estate_real_estate"/>
+              <field name="state">code</field>
+              <field name="code">
+                action = {
+                  "type": "ir.actions.act_window",
+                  "view_mode": "tree,form",
+                  "res_model": model._name,
+                }
+              </field>
+            </record>
+        -->
+
+        <!-- Top menu item -->
+
+        <!--        <menuitem name="estate_properties" id="real_estate.estate_properties"/>-->
+
+        <menuitem id="test_menu_root" name="Estate Properties">
+            <menuitem id="test_first_level_menu" name="First Level">
+                <menuitem id="estate_properties_menu_action" action="estate_properties_action_window"/>
+            </menuitem>
+        </menuitem>
+
+        <!-- menu categories -->
+
+        <!--            <menuitem name="Menu 1" id="estate_properties.menu_1" parent="estate_properties.menu_root"/>-->
+        <!--            <menuitem name="Menu 2" id="estate_properties.menu_2" parent="estate_properties.menu_root"/>-->
+
+        <!-- actions -->
+        <!--
+            <menuitem name="List" id="real_estate.menu_1_list" parent="real_estate.menu_1"
+                      action="real_estate.action_window"/>
+            <menuitem name="Server to list" id="real_estate" parent="real_estate.menu_2"
+                      action="real_estate.action_server"/>
+        -->
+    </data>
+</odoo>

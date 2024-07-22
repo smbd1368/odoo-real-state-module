@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Define the action first -->
+    <record model="ir.actions.act_window" id="action_estate_properties_type">
+        <field name="name">Properties Type</field>
+        <field name="res_model">estate.properties.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Define the menu item after the action -->
+    <menuitem id="menu_estate_properties_type_root"
+              name="Property Types"
+              sequence="0"
+              action="action_estate_properties_type"
+    />
+
+    <record model="ir.ui.view" id="properties_type_list">
+        <field name="name">Property Types list</field>
+        <field name="model">estate.properties.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="buyer"/>
+                <field name="seller"/>
+                <field name="sequence" widget="handle"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="properties_type_form">
+        <field name="name">Property Types Form</field>
+        <field name="model">estate.properties.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="buyer"/>
+                        <field name="seller"/>
+                        <field name="property_id">
+                            <tree>
+                                <field name="expected_price"/>
+                                <field name="status"/>
+                            </tree>
+                        </field>
+
+
+                    </group>
+                </sheet>
+
+
+            </form>
+        </field>
+    </record>
+
+
+</odoo>
